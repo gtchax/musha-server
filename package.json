@@ -4,7 +4,9 @@
   "main": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": ""
+    "dev": "nodemon",
+    "build": "npm install && npx tsc",
+    "start": "node ./dist/index.js"
   },
   "dependencies": {
     "@types/yup": "0.32.0",
