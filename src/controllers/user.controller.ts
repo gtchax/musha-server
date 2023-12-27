@@ -22,7 +22,7 @@ export const signup: RequestHandler = async (req, res) => {
     maxAge: 30 * 24 * 60 * 1000, // 30 Days
   });
 
-  return res.sendStatus(201);
+  res.send(201).json({message: 'Registered successfully'});
 };
 
 export const login: RequestHandler = async (req, res) => {
@@ -50,5 +50,10 @@ export const login: RequestHandler = async (req, res) => {
     maxAge: 30 * 24 * 60 * 1000, // 30 Days
   });
 
-  return res.sendStatus(201);
+  return res.send(200).json({message: 'Logged in successfully'});
+};
+export const verifyToken: RequestHandler = async (req, res) => {
+  const user = await User.findById(req.id);
+  if (!user) throw new Error('Token not verified');
+  return res.send(200).json({message: 'Token verified successfully'});
 };
