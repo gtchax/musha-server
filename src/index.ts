@@ -1,4 +1,5 @@
 import express from "express";
+import path from 'path'
 import cors from "cors";
 import "dotenv/config";
 import "express-async-errors";
@@ -18,7 +19,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(express.static(path.join(__dirname, '../../client/dist')))
 app.use("/api/v1/users", userRouter);
 app.use(notFound);
 app.use(errorHandler);
