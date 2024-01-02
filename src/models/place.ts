@@ -1,4 +1,4 @@
-import { Model, Schema, model } from "mongoose";
+import { Model, ObjectId, Schema, model } from "mongoose";
 
 export type TPlace = {
   _id: string;
@@ -7,7 +7,7 @@ export type TPlace = {
   name: string;
   description: string;
   type: string;
-  userId: string;
+  user: ObjectId;
   starRating: number;
   facilities: string[];
   imageUrls: string[];
@@ -23,7 +23,7 @@ const userSchema = new Schema<TPlace, {}, Methods>(
     name: { type: String, required: true },
     description: { type: String, required: true },
     type: { type: String, required: true },
-    userId: { type: String, required: true },
+    user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
     starRating: { type: Number, required: true, min: 1, max: 5 },
     facilities: [{ type: String, required: true }],
     imageUrls: [{ type: String, required: true }],
