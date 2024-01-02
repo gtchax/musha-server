@@ -1,22 +1,16 @@
 import { RequestHandler } from "express";
-import User from "../models/user";
-import multer from 'multer'
+import Place from "../models/place";
+import cloudinary from "cloudinary";
 
-const storage = multer.memoryStorage()
-const upload = multer({
-    storage,
-    limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB
-    }
-})
 export const places: RequestHandler = async (req, res) => {
-  const { email, password, name } = req.body;
+  const imageFiles = req.files as Express.Multer.File[];
+  const newPlace = req.body;
+  const upload = imageFiles.map(async (img) => {
+    const base64 = Buffer.from(img.buffer).toString("base64");
+    let dataURI = `data:${img.mimetype};base64${base64}`;
+    const res = await cloudinary.v2.uploader.upload(dataURI);
+    return res.url
+  });
 
-  const oldUser = await User.findOne({ email });
-  if (oldUser) return res.status(403).json({ error: "Email already in use" });
-
-  const user = await User.create({ name, email, password });
-
-
-  res.send(201).json({message: 'Registered successfully'});
+  const imageUrls = await Promise.all(upload)
 };
