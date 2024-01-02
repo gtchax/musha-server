@@ -4,7 +4,7 @@ import cloudinary from "cloudinary";
 
 export const places: RequestHandler = async (req, res) => {
   const imageFiles = req.files as Express.Multer.File[];
-  const placeData: TPlace = req.body;
+  const newPlace: TPlace = req.body;
   const upload = imageFiles.map(async (img) => {
     const base64 = Buffer.from(img.buffer).toString("base64");
     let dataURI = `data:${img.mimetype};base64${base64}`;
@@ -13,7 +13,9 @@ export const places: RequestHandler = async (req, res) => {
   });
 
   const imageUrls = await Promise.all(upload)
-  const newPlace = new Place()
   newPlace.imageUrls = imageUrls;
+  newPlace.user = req.id
+  const place = Place.create(newPlace);
+  res.status(201).send(place)
   
 };

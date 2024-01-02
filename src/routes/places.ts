@@ -1,8 +1,10 @@
-import express from 'express'
-import { upload } from '../middleware/image'
-import { places } from '../controllers/place.controller'
-const router = express.Router()
+import express from "express";
+import { upload } from "../middleware/image";
+import { places } from "../controllers/place.controller";
+import { verifyJWT } from "../middleware/verifyJWT";
+import { validate } from "../middleware/validate";
+import { placeSchema } from "../../utils/validationSchema";
+const router = express.Router();
 
-
-
-router.post('/', upload.array('images', 6), places)
+router.use(verifyJWT);
+router.post("/", validate(placeSchema), upload.array("images", 6), places);

@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
 import { JwtPayload, verify } from "jsonwebtoken";
+import { ObjectId } from "mongoose";
 
 declare global {
   namespace Express {
     interface Request {
-      id: string;
+      id: ObjectId;
     }
   }
 }
